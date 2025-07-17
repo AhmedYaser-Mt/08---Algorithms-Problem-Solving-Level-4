@@ -1,0 +1,190 @@
+#include<iostream>
+using namespace std;
+
+string GetOnesDigitText(short Number)
+{
+	switch (Number)
+	{
+	case 0:
+		return "";
+	case 1:
+		return "One";
+	case 2:
+		return "Two";
+	case 3:
+		return "Three";
+	case 4:
+		return "Four";
+	case 5:
+		return "Five";
+	case 6:
+		return "Six";
+	case 7:
+		return "Seven";
+	case 8:
+		return "Eight";
+	case 9:
+		return "Nine";
+	}
+}
+
+string GetTensDigitText(short Number)
+{
+	switch (Number)
+	{
+	case 0:
+		return "";
+	case 1:
+		return "Ten";
+	case 2:
+		return "Twenty";
+	case 3:
+		return "Thirty";
+	case 4:
+		return "Forty";
+	case 5:
+		return "Fifty";
+	case 6:
+		return "Sixty";
+	case 7:
+		return "Seventy";
+	case 8:
+		return "Eighty";
+	case 9:
+		return "Ninety";
+	}
+}
+
+bool IsNumberFrom11to19(short Number)
+{
+	for (short i=11;i<=19;i++)
+	{
+		if (Number == i)
+			return true;
+	}
+	
+	return false;
+}
+
+string GetFrom11To19Text(short Number)
+{
+	switch (Number)
+	{
+	case 11:
+		return "Eleven";
+	case 12:
+		return "Twelve";
+	case 13:
+		return "Thirteen";
+	case 14:
+		return "Fourteen";
+	case 15:
+		return "Fifteen";
+	case 16:
+		return "Sixteen";
+	case 17:
+		return "Seventeen";
+	case 18:
+		return "Eighteen";
+	case 19:
+		return "Nineteen";
+	}
+}
+
+string GetTensText(short Number)
+{
+	string Text = "";
+	if (IsNumberFrom11to19(Number))
+	{
+		Text = GetFrom11To19Text(Number);
+	}
+	else
+	{
+		short TensDigit = Number / 10;
+		short OnesDigit = Number % 10;
+		Text = GetTensDigitText(TensDigit) + " " + GetOnesDigitText(OnesDigit);
+	}
+	return Text;
+}
+
+string GetHundredsText(short Number)
+{
+	string Text = "";
+
+	short HundredsDigit = Number / 100;
+	short TensDigits = Number % 100;
+	if (HundredsDigit != 0)
+	{
+		Text = GetOnesDigitText(HundredsDigit) + " Hundreds " + GetTensText(TensDigits);
+	}
+	else
+	{
+		Text = GetTensText(TensDigits);
+	}
+
+	return Text;
+}
+
+string GetThousandsText(int Number)
+{
+	string Text = "";
+
+	int ThousandsDigits = Number / 1000;
+	int HundredsDigits = Number % 1000;
+	if (ThousandsDigits != 0)
+	{
+		Text = GetHundredsText(ThousandsDigits) + " Thousands " + GetHundredsText(HundredsDigits);
+	}
+	else
+	{
+		Text = GetHundredsText(HundredsDigits);
+	}
+
+	return Text;
+}
+
+string GetMillionsText(int Number)
+{
+	string Text = "";
+
+	int MillionsDigits = Number / 1000000;
+	int ThousandsDigits = Number % 1000000;
+	if (MillionsDigits != 0)
+	{
+		Text = GetHundredsText(MillionsDigits) + " Millions " + GetThousandsText(ThousandsDigits);
+	}
+	else
+	{
+		Text = GetThousandsText(ThousandsDigits);
+	}
+
+	return Text;
+}
+
+string GetBillionsText(unsigned long long Number)
+{
+	string Text = "";
+
+	unsigned long long BillionsDigits = Number / 1000000000;
+	unsigned long long MillionsDigits = Number % 1000000000;
+	if (Number == 0)
+	{
+		Text = "Zero";
+	}
+	else if (BillionsDigits != 0)
+	{
+		Text = GetHundredsText(BillionsDigits) + " Billions " + GetMillionsText(MillionsDigits);
+	}
+	else
+	{
+		Text = GetMillionsText(MillionsDigits);
+	}
+
+	return Text;
+}
+
+int main()
+{
+	cout << GetBillionsText(458968) << endl;
+	return 0;
+}
