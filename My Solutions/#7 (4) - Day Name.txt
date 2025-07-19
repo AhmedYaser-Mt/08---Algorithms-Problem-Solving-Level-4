@@ -1,0 +1,85 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+short ReadYear()
+{
+	short Year;
+	cout << "Please Enter a Year ? ";
+	cin >> Year;
+	return Year;
+}
+
+short ReadMonth()
+{
+	short Month;
+	cout << "\nPlease Enter a Month ? ";
+	cin >> Month;
+	return Month;
+}
+
+short ReadDay()
+{
+	short Day;
+	cout << "\nPlease Enter a Day ? ";
+	cin >> Day;
+	return Day;
+}
+
+string GetDate(short Day, short Month, short Year)
+{
+	return to_string(Day) + "/" + to_string(Month) + "/" + to_string(Year);
+}
+
+short GetA(short Month)
+{
+	return ((14-Month)/(12));
+}
+
+short GetY(short Year, short A)
+{
+	return Year - A;
+}
+
+short GetM(short Month, short A)
+{
+	return Month + 12 * A - 2;
+}
+
+short GetD(short Day, short Y, short M)
+{
+	return ((Day + Y + (Y / 4) - (Y / 100) + (Y / 400) + ((31*M)/12)) % 7 );
+}
+
+short GetDayOrder(short Day, short Month, short Year)
+{
+	short A = GetA(Month);
+	short Y = GetY(Year, A);
+	short M = GetM(Month, A);
+
+	short D = GetD(Day, Y, M);
+
+	return D;
+}
+
+string GetDayName(short DayOrder)
+{
+	string arrDayName[7] = {"Sun", "Mon", "Tue", "Wed", "Thus", "Fri", "Sut", };
+
+	return arrDayName[DayOrder];
+}
+
+int main()
+{
+	short Year = ReadYear();
+	short Month = ReadMonth();
+	short Day = ReadDay();
+	
+	cout << endl << endl;
+	cout << "Data      : " << GetDate(Day, Month, Year) << endl;
+	cout << "Day Order : " << GetDayOrder(Day, Month, Year) << endl;
+	cout << "Day Name  : " << GetDayName(GetDayOrder(Day, Month, Year)) << endl;
+
+	system("pause>0");
+	return 0;
+}

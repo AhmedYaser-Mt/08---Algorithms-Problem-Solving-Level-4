@@ -1,0 +1,100 @@
+#include<iostream>
+using namespace std;
+
+short ReadYear()
+{
+	short Year;
+	cout << "Please Enter a Year ? ";
+	cin >> Year;
+	return Year;
+}
+
+short DayOfWeekOrder(short Day, short Month, short Year)
+{
+	short A = (14 - Month) / 12;
+
+	short Y = Year - A;
+
+	short M = Month + 12 * A - 2;
+
+	return (Day + Y + (Y / 4) - (Y / 100) + (Y / 400) + ((31 * M) / 12)) % 7;
+}
+
+string DayShortName(short DayOfWeekOrder)
+{
+	string arrDayNames[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sut", };
+
+	return arrDayNames[DayOfWeekOrder];
+}
+
+bool IsLeapYear(short Year)
+{
+	return ((Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0)));
+}
+
+short NumberOfDaysInAMonth(short Year, short Month)
+{
+	if (Month < 1 || Month > 12)
+		return 0;
+
+	short NumberOfDays[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+
+	return (Month == 2) ? (IsLeapYear(Year) ? 29 : 28) : (NumberOfDays[Month - 1]);
+}
+
+string MonthShortName(short MonthNumber)
+{
+	string Months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+	return Months[MonthNumber - 1];
+}
+
+void PrintMonthCalendar(short Year, short Month)
+{
+	short NumberOfDays = NumberOfDaysInAMonth(Year, Month);
+
+	short Current = DayOfWeekOrder(1, Month, Year);
+
+	printf("\n  _______________%s________________\n", MonthShortName(Month).c_str());
+	printf("\n  Sun  Mon  Tue  Wed  Thu  Fri  Sat\n");
+
+	short i;
+
+	for (i = 0;i < Current;i++)
+		printf("     ");
+
+	for (short j=1;j<=NumberOfDays;j++)
+	{
+		printf("%5d", j);
+
+		if (++i == 7)
+		{
+			i = 0;
+			printf("\n");
+		}
+	}
+
+	printf("\n  __________________________________\n");
+}
+
+void PrintYearCalendar(short Year)
+{
+	printf("\n  __________________________________\n");
+	printf("\n          Calendar - %d", Year);
+	printf("\n  __________________________________\n");
+
+	for (short i = 1;i <= 12;i++)
+	{
+		PrintMonthCalendar(Year, i);
+	}
+}
+
+int main()
+{
+	short Year = ReadYear();
+
+	PrintYearCalendar(Year);
+
+	system("pause>0");
+	return 0;
+}
