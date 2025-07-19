@@ -1,0 +1,59 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+short ReadYear()
+{
+	short Year;
+	cout << "Please Enter a Year ? ";
+	cin >> Year;
+	return Year;
+}
+
+short ReadMonth()
+{
+	short Month;
+	cout << "\nPlease Enter a Month ? ";
+	cin >> Month;
+	return Month;
+}
+
+short ReadDay()
+{
+	short Day;
+	cout << "\nPlease Enter a Day ? ";
+	cin >> Day;
+	return Day;
+}
+
+short DayOfWeekOrder(short Day, short Month, short Year)
+{
+	short A = (14 - Month) / 12;
+
+	short Y = Year - A;
+
+	short M = Month + 12 * A - 2;
+
+	return (Day + Y + (Y / 4) - (Y / 100) + (Y / 400) + ((31 * M) / 12)) % 7;
+}
+
+string DayShortName(short DayOfWeekOrder)
+{
+	string arrDayNames[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", };
+
+	return arrDayNames[DayOfWeekOrder];
+}
+
+int main()
+{
+	short Year = ReadYear();
+	short Month = ReadMonth();
+	short Day = ReadDay();
+
+	cout << "\nData      : " << Day << "/" << Month << "/" << Year;
+	cout << "\nDay Order : " << DayOfWeekOrder(Day, Month, Year);
+	cout << "\nDay Name  : " << DayShortName(DayOfWeekOrder(Day, Month, Year)) << endl;
+
+	system("pause>0");
+	return 0;
+}
