@@ -1,0 +1,159 @@
+#pragma warning (disable : 4996)
+
+#include<iostream>
+#include<ctime>
+using namespace std;
+
+struct sDate
+{
+	short Day;
+	short Month;
+	short Year;
+};
+
+bool IsLeapYear(short Year)
+{
+	return ((Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0)));
+}
+
+short NumberOfDaysInAMonth(short Year, short Month)
+{
+	if (Month < 1 || Month > 12)
+		return 0;
+
+	short NumberOfDays[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+
+	return (Month == 2) ? (IsLeapYear(Year) ? 29 : 28) : (NumberOfDays[Month - 1]);
+}
+
+short NumberOfDaysFromTheBeginingOfTheYear(sDate Date)
+{
+	short TotalDays = 0;
+
+	for (short i = 1;i < Date.Month;i++)
+	{
+		TotalDays += NumberOfDaysInAMonth(Date.Year, i);
+	}
+
+	TotalDays += Date.Day;
+
+	return TotalDays;
+}
+
+short NumberOfDaysInAYear(short Year)
+{
+	return IsLeapYear(Year) ? 366 : 365;
+}
+
+short DayOfWeekOrder(short Day, short Month, short Year)
+{
+	short A = (14 - Month) / 12;
+
+	short Y = Year - A;
+
+	short M = Month + 12 * A - 2;
+
+	return (Day + Y + (Y / 4) - (Y / 100) + (Y / 400) + ((31 * M) / 12)) % 7;
+}
+
+short DayOfWeekOrder(sDate Date)
+{
+	short A = (14 - Date.Month) / 12;
+
+	short Y = Date.Year - A;
+
+	short M = Date.Month + 12 * A - 2;
+
+	return (Date.Day + Y + (Y / 4) - (Y / 100) + (Y / 400) + ((31 * M) / 12)) % 7;
+}
+
+string DayShortName(short DayOfWeekOrder)
+{
+	string arrDayNames[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", };
+
+	return arrDayNames[DayOfWeekOrder];
+}
+
+sDate GetSystemDate()
+{
+	sDate Date;
+
+	time_t t = time(0);
+	tm* Now = localtime(&t);
+
+	Date.Year = Now->tm_year + 1900;
+	Date.Month = Now->tm_mon + 1;
+	Date.Day = Now->tm_mday;
+
+	return Date;
+}
+
+bool IsEndOfWeek(short DayOfWeekOrder)
+{
+	return (DayOfWeekOrder == 6);
+}
+
+bool IsWeekEnd(short DayOfWeekOrder)
+{
+	return (DayOfWeekOrder == 5 || DayOfWeekOrder == 6);
+}
+
+bool IsBusinessDay(short DayOfWeekOrder)
+{
+	return (DayOfWeekOrder >= 0 && DayOfWeekOrder <= 4);
+}
+
+short DaysUntilTheEndOfWeek(short DayOfWeekOrder)
+{
+	return (6 - DayOfWeekOrder);
+}
+
+short DaysUntilTheEndOfMonth(sDate Date)
+{
+	return (NumberOfDaysInAMonth(Date.Year, Date.Month) - Date.Day);
+}
+
+short DaysUntilTheEndOfYear(sDate Date)
+{
+	return (NumberOfDaysInAYear(Date.Year) - NumberOfDaysFromTheBeginingOfTheYear(Date));
+}
+
+int main()
+{
+	sDate Date = GetSystemDate();
+
+	short DayOrderInWeek = DayOfWeekOrder(Date);
+
+	cout << "Today is " << DayShortName(DayOrderInWeek) << " , " << Date.Day << "/" << Date.Month << "/" << Date.Year << endl;
+
+	cout << "\nIs it End of Week?\n";
+
+	if (IsEndOfWeek(DayOrderInWeek))
+		cout << "Yes End of Week.\n";
+	else
+		cout << "No Not End of Week.\n";
+
+
+	cout << "\nIs it Weekend?\n";
+
+	if (IsWeekEnd(DayOrderInWeek))
+		cout << "Yes it is a week end.\n";
+	else
+		cout << "No it is Not a week end.\n";
+
+
+	cout << "\nIs it Business Day?\n";
+
+	if (IsBusinessDay(DayOrderInWeek))
+		cout << "Yes it is a Business Day.\n";
+	else
+		cout << "No it is Not a Business Day.\n";
+
+
+	cout << "\nDays until end of week : " << DaysUntilTheEndOfWeek(DayOrderInWeek) << " Day(s).";
+	cout << "\nDays until end of month : " << DaysUntilTheEndOfMonth(Date) << " Day(s).";
+	cout << "\nDays until end of year : " << DaysUntilTheEndOfYear(Date) << " Day(s).\n";
+
+	system("pause>0");
+	return 0;
+}

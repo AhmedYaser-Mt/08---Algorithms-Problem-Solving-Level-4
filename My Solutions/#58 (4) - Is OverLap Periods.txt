@@ -1,0 +1,123 @@
+#include<iostream>
+using namespace std;
+
+struct sDate
+{
+	short Day;
+	short Month;
+	short Year;
+};
+
+struct sPeriod
+{
+	sDate DateFrom;
+	sDate DateTo;
+};
+
+short ReadYear()
+{
+	short Year;
+	cout << "Please Enter a Year ? ";
+	cin >> Year;
+	return Year;
+}
+
+short ReadMonth()
+{
+	short Month;
+	cout << "Please Enter a Month ? ";
+	cin >> Month;
+	return Month;
+}
+
+short ReadDay()
+{
+	short Day;
+	cout << "Please Enter a Day ? ";
+	cin >> Day;
+	return Day;
+}
+
+sDate ReadFullDate()
+{
+	sDate Date;
+
+	Date.Day = ReadDay();
+	Date.Month = ReadMonth();
+	Date.Year = ReadYear();
+
+	return Date;
+}
+
+bool IsDate1BeforeDate2(sDate& Date1, sDate& Date2)
+{
+	return (Date1.Year < Date2.Year) ? true : ((Date1.Year == Date2.Year) ? ((Date1.Month < Date2.Month) ? true : (Date1.Month == Date2.Month) ? (Date1.Day < Date2.Day) : false) : false);
+}
+
+bool IsDate1EqualToDate2(sDate& Date1, sDate& Date2)
+{
+	return (Date1.Year == Date2.Year) ? ((Date1.Month == Date2.Month) ? ((Date1.Day == Date2.Day) ? true : false) : false) : false;
+}
+
+bool IsDate1AfterDate2(sDate& Date1, sDate& Date2)
+{
+	return (!IsDate1BeforeDate2(Date1, Date2) && !IsDate1EqualToDate2(Date1, Date2));
+}
+
+enum enDateCompare { Before = -1, Equal = 0, After = 1 };
+
+enDateCompare CompareDates(sDate& Date1, sDate& Date2)
+{
+	if (IsDate1BeforeDate2(Date1, Date2))
+		return enDateCompare::Before;
+	else if (IsDate1EqualToDate2(Date1, Date2))
+		return enDateCompare::Equal;
+
+		return enDateCompare::After;
+}
+
+bool IsPeriodsOverLap(sPeriod Period1, sPeriod Period2)
+{
+	if (CompareDates(Period1.DateFrom, Period2.DateFrom) == enDateCompare::Equal || CompareDates(Period1.DateTo, Period2.DateTo) == enDateCompare::Equal)
+		return true;
+	else if (CompareDates(Period1.DateFrom, Period2.DateTo) == enDateCompare::Equal || CompareDates(Period1.DateTo, Period2.DateFrom) == enDateCompare::Equal)
+		return true;
+	else if (CompareDates(Period1.DateFrom, Period2.DateFrom) == enDateCompare::Before && CompareDates(Period1.DateTo, Period2.DateTo) == enDateCompare::After)
+		return true;
+	else if (CompareDates(Period1.DateFrom, Period2.DateFrom) == enDateCompare::After && CompareDates(Period1.DateTo, Period2.DateTo) == enDateCompare::Before)
+		return true;
+	else if (CompareDates(Period1.DateTo, Period2.DateFrom) == enDateCompare::After && CompareDates(Period1.DateFrom, Period2.DateTo) == enDateCompare::Before)
+		return true;
+	else if (CompareDates(Period2.DateTo, Period1.DateFrom) == enDateCompare::After && CompareDates(Period2.DateFrom, Period1.DateTo) == enDateCompare::Before)
+		return true;
+
+	return false;
+}
+
+int main()
+{
+	sPeriod Period1;
+
+	cout << "Enter Period 1 :\n";
+	cout << "Enter Start Date :\n\n";
+	Period1.DateFrom = ReadFullDate();
+	cout << "\nEnter End Date :\n\n";
+	Period1.DateTo = ReadFullDate();
+
+	sPeriod Period2;
+
+	cout << "\nEnter Period 2 :\n";
+	cout << "Enter Start Date :\n\n";
+	Period2.DateFrom = ReadFullDate();
+	cout << "\nEnter End Date :\n\n";
+	Period2.DateTo = ReadFullDate();
+
+
+	if (IsPeriodsOverLap(Period1, Period2))
+		cout << "\nYes, Periods Overlap\n";
+	else
+		cout << "\nNo, Periods Does NOT Overlap\n";
+
+	system("pause>0");
+	return 0;
+}

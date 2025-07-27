@@ -1,0 +1,136 @@
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+
+struct stDate
+{
+	short Day;
+	short Month;
+	short Year;
+};
+
+short ReadYear()
+{
+	short Year;
+	cout << "Please Enter a Year ? ";
+	cin >> Year;
+	return Year;
+}
+
+short ReadMonth()
+{
+	short Month;
+	cout << "Please Enter a Month ? ";
+	cin >> Month;
+	return Month;
+}
+
+short ReadDay()
+{
+	short Day;
+	cout << "Please Enter a Day ? ";
+	cin >> Day;
+	return Day;
+}
+
+stDate ReadFullDate()
+{
+	stDate Date;
+
+	Date.Day = ReadDay();
+	Date.Month = ReadMonth();
+	Date.Year = ReadYear();
+
+	return Date;
+}
+
+string ReadDateString(string Message)
+{
+	string DateString;
+	cout << Message;
+	getline(cin >> ws, DateString);
+	return DateString;
+}
+
+vector <string> SplitString(string S1, string Delim)
+{
+	short pos = 0;
+	string sWord = "";
+	vector <string> vString;
+
+	while ((pos = S1.find(Delim)) != std::string::npos)
+	{
+		sWord = S1.substr(0, pos);
+		if (sWord != "")
+		{
+			vString.push_back(sWord);
+		}
+
+		S1.erase(0, pos + Delim.length());
+	}
+
+	if (S1 != "")
+	{
+		vString.push_back(S1);
+	}
+
+	return vString;
+}
+
+stDate StringToDate(string DateString)
+{
+	stDate Date;
+	vector <string> vDate = SplitString(DateString, "/");
+
+	Date.Day = stoi(vDate[0]);
+	Date.Month = stoi(vDate[1]);
+	Date.Year = stoi(vDate[2]);
+
+	return Date;
+}
+
+enum enDateFormat { Text = 1, DayMonthYear = 2, MonthDayYear = 3, YearMonthDay = 4, YearDayMonth = 5 };
+
+string DateToString(stDate Date, enDateFormat DateFormat, string Separetor = "")
+{
+	switch (DateFormat)
+	{
+	case enDateFormat::Text:
+		return "Day:" + to_string(Date.Day) + ", Month:" + to_string(Date.Month) + ", Year:" + to_string(Date.Year);
+
+	case enDateFormat::DayMonthYear:
+		return to_string(Date.Day) + Separetor + to_string(Date.Month) + Separetor + to_string(Date.Year);
+
+	case enDateFormat::MonthDayYear:
+		return to_string(Date.Month) + Separetor + to_string(Date.Day) + Separetor + to_string(Date.Year);
+
+	case enDateFormat::YearDayMonth:
+		return to_string(Date.Year) + Separetor + to_string(Date.Day) + Separetor + to_string(Date.Month);
+
+	case enDateFormat::YearMonthDay:
+		return to_string(Date.Year) + Separetor + to_string(Date.Month) + Separetor + to_string(Date.Day);
+	}
+}
+
+int main()
+{
+	string DateString = ReadDateString("Please Enter Date dd/mm/yyyy ? ");
+
+	stDate Date = StringToDate(DateString);
+
+	cout << endl << DateToString(Date, enDateFormat::DayMonthYear, "/") << endl;
+ 
+	cout << endl << DateToString(Date, enDateFormat::YearDayMonth, "/") << endl;
+ 
+	cout << endl << DateToString(Date, enDateFormat::MonthDayYear, "/") << endl;
+ 
+	cout << endl << DateToString(Date, enDateFormat::MonthDayYear, "-") << endl;
+ 
+	cout << endl << DateToString(Date, enDateFormat::DayMonthYear, "-") << endl;
+ 
+	cout << endl << DateToString(Date, enDateFormat::Text) << endl << endl;
+
+	system("pause>0");
+	return 0;
+}
