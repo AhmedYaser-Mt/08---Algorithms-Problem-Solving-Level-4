@@ -1,0 +1,157 @@
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+
+struct stDate
+{
+	short Day;
+	short Month;
+	short Year;
+};
+
+short ReadYear()
+{
+	short Year;
+	cout << "Please Enter a Year ? ";
+	cin >> Year;
+	return Year;
+}
+
+short ReadMonth()
+{
+	short Month;
+	cout << "Please Enter a Month ? ";
+	cin >> Month;
+	return Month;
+}
+
+short ReadDay()
+{
+	short Day;
+	cout << "Please Enter a Day ? ";
+	cin >> Day;
+	return Day;
+}
+
+stDate ReadFullDate()
+{
+	stDate Date;
+
+	Date.Day = ReadDay();
+	Date.Month = ReadMonth();
+	Date.Year = ReadYear();
+
+	return Date;
+}
+
+bool IsLeapYear(short Year)
+{
+	return ((Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0)));
+}
+
+short NumberOfDaysInAMonth(short Year, short Month)
+{
+	if (Month < 1 || Month > 12)
+		return 0;
+
+	short NumberOfDays[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+
+	return (Month == 2) ? (IsLeapYear(Year) ? 29 : 28) : (NumberOfDays[Month - 1]);
+}
+
+bool IsValidDate(stDate Date)
+{
+	if (Date.Day < 1 || Date.Day > 31)
+		return false;
+
+	if (Date.Month < 1 || Date.Month > 12)
+		return false;
+
+	if (Date.Month == 2)
+	{
+		if (IsLeapYear(Date.Year))
+		{
+			if (Date.Day > 29)
+				return false;
+		}
+		else
+		{
+			if (Date.Day > 28)
+				return false;
+		}
+	}
+
+	short DaysInMonth = NumberOfDaysInAMonth(Date.Year, Date.Month);
+
+	if (Date.Day > DaysInMonth)
+		return false;
+
+	return true;
+}
+
+string ReadDateString(string Message)
+{
+	string DateString;
+	cout << Message;
+	getline(cin >> ws, DateString);
+	return DateString;
+}
+
+vector <string> SplitString(string S1, string Delim)
+{
+	short pos = 0;
+	string sWord = "";
+	vector <string> vString;
+	
+	while ((pos = S1.find(Delim)) != std::string::npos)
+	{
+		sWord = S1.substr(0, pos);
+		if (sWord != "")
+		{
+			vString.push_back(sWord);
+		}
+
+		S1.erase(0, pos + Delim.length());
+	}
+
+	if (S1 != "")
+	{
+		vString.push_back(S1);
+	}
+
+	return vString;
+}
+
+stDate StringToDate(string DateString)
+{
+	stDate Date;
+	vector <string> vDate = SplitString(DateString, "/");
+
+	Date.Day = stoi(vDate[0]);
+	Date.Month = stoi(vDate[1]);
+	Date.Year = stoi(vDate[2]);
+
+	return Date;
+}
+
+string DateToString(stDate Date)
+{
+	return to_string(Date.Day) + '/' + to_string(Date.Month) + '/' + to_string(Date.Year);
+}
+
+int main()
+{
+	string DateString = ReadDateString("Please Enter Date dd/mm/yyyy ? ");
+
+	stDate Date = StringToDate(DateString);
+
+	cout << "\nDay   : " << Date.Day;
+	cout << "\nMonth : " << Date.Month;
+	cout << "\nYear  : " << Date.Year;
+
+	cout << "\n\nYou Entered : " << DateToString(Date) << endl;
+
+	system("pause>0");
+	return 0;
+}
