@@ -46,3 +46,37 @@ This repository contains:
 
 ## 📌 Credits
 Special thanks to **Dr. Mohammad Abu Hadhoud** for his guidance and clear teaching style through the Programming Advices platform.
+
+---
+
+Each file corresponds to a unique problem, complete with comments explaining the logic and approach.
+
+---
+
+## 💡 Key Highlights
+- ✅ Solved **50+ advanced problems** using **C++**.
+- ✅ Applied **performance-focused** solutions.
+- ✅ Strengthened **edge case handling**.
+- ✅ Gained real-world simulation through **two mini-projects**.
+
+---
+
+## 🛠 Technologies Used
+- **Language:** C++
+- **Paradigm:** Structured Programming
+- **Tools:** VS Code / Dev-C++, Git, GitHub
+
+---
+
+## 🔜 Next Steps
+I’ll be moving on to:
+1. **Foundations Level 2**
+2. **Object-Oriented Programming (OOP)** — which will transform my software development approach.
+
+---
+
+## 📬 Connect
+If you’d like to check my other projects or connect:
+- **GitHub:** [AhmedYaser-Mt](https://github.com/AhmedYaser-Mt)
+- **LinkedIn:** [Ahmed Yasser](https://www.linkedin.com/in/ahmed-yaser-mt)
+
